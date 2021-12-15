@@ -12,7 +12,7 @@ class Player(SteamObject):
     gameList = []
     
     def __init__(self, identifier, name):
-        super.init(identifier, name)
+        super().__init__(identifier, name)
         
     def addGame(self, game):
         self.gameList.append(game)
@@ -24,7 +24,7 @@ class Game(SteamObject):
     playtime_forever = -1
     
     def __init__(self, identifier, name, play2week, playforever):
-        super.init(identifier, name)
+        super().__init__(identifier, name)
         self.playtime_2weeks = play2week
         self.playtime_forever = playforever
         

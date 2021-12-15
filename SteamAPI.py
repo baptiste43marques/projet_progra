@@ -1,8 +1,9 @@
 import urllib
+import json
 
 class ISteamNews:
     @staticmethod
-    def GetNewsForApp(appId = 440, count = 3, maxlength = 300, formatS = "json"):
+    def GetNewsForApp(appid = 440, count = 3, maxlength = 300, formatS = "json"):
         version = "v0002"
         parameters = {}
         parameters["appid"] = appid
@@ -13,7 +14,7 @@ class ISteamNews:
         
 class ISteamUserStats:
     @staticmethod
-    def GetGlobalAchievementPercentagesForApp(gameId = 440, formatS = "json"):
+    def GetGlobalAchievementPercentagesForApp(gameid = 440, formatS = "json"):
         version = "v0002"
         parameters = {}
         parameters["gameid"] = gameid
@@ -88,4 +89,7 @@ def globalRequest(module, function, version, parameters):
         url += i + "=" + parameters[i]
         if i != list(parameters.keys())[len(list(parameters.keys())) - 1]:
             url += "&"
-    return urllib.request.urlopen(url)
+    response =  urllib.request.urlopen(url)
+    chaine = response.read().decode('utf-8')
+    dictionnaire = json.loads(chaine)
+    return dictionnaire
