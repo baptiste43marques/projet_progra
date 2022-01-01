@@ -1,6 +1,12 @@
 import urllib
 import json
 
+# Ce module reprend le fonctionnement de l'API Steam.
+# Chaque classe représente un module
+# Chaque fonction prend divers paramètres, et renvoie au final un dictionnaire avec toutes les données que peut renvoyer la fonction
+# Les fonctions s'utilisent avec:
+    # SteamAPI.Module.Fonction(parametres)
+
 class ISteamNews:
     @staticmethod
     def GetNewsForApp(appid = 440, count = 3, maxlength = 300, formatS = "json"):
