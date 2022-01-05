@@ -35,7 +35,21 @@ while len(playerList) < 100 and len(atraiter) > 0:
     # On récupère son pseudo
     player = Player(idActu, summary["response"]["players"][0]["personaname"])
     
-    # TODO Ajouter au joueur la liste des jeux qu'il possède (avec les temps de jeux)
+    # On récupère sa liste de jeux possédés et récemment joués
+    allGames = SteamAPI.IPlayerService.GetOwnedGames(api_key_, idActu, include_appinfo = True, include_played_free_games = True)
+    recentGames = SteamAPI.IPlayerService.GetRecentlyPlayedGames(api_key_, idActu)
+    
+    # Si l'appel nous renvoie plus d'un jeu, alors on les ajoute
+    if(len(allGames["response"]) > 0 and allGames["response"]["game_count"] > 0):
+        for i in allGames["response"]["games"]:
+            jeu = Game(i["appid"], i["name"], i["playtime_forever"])
+            player.addOwnedGame(jeu)
+    
+    # Idem pour les jeux récents
+    if(len(recentGames["response"]) > 0 and recentGames["response"]["total_count"] > 0):    
+        for i in recentGames["response"]["games"]:
+            jeu = Game(i["appid"], i["name"], i["playtime_2weeks"])
+            player.addRecentGame(jeu)
     
     # On ajoute le joueur au dictionnaire (avec son steamid comme clé)
     playerList[idActu] = player
