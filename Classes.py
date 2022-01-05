@@ -1,4 +1,4 @@
-# Classe abstraite, ne pas instancier sans enfant
+# Classe abstraite, ne pas instancier seule
 class SteamObject:
     identifier = -1
     name = ""
