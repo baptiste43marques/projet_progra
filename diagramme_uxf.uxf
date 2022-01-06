@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="13.3">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>200</x>
+      <y>0</y>
+      <w>360</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>/SteamObject/
+Classes::SteamObject
+--
++identifier: Integer
++name: String
+--
++__init__(identifier: Integer, name: String): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>210</y>
+      <w>350</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>Player
+Classes::Player
+--
++recentGameList: Dict&lt;String, Game&gt;
++allGameList: Dict&lt;String, Game&gt;
+--
++__init__(identifier: Integer, name: String): void
++addRecentGame(game: Game): void
++addOwnedGame(game: Game): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>160</x>
+      <y>90</y>
+      <w>190</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>170.0;10.0;170.0;70.0;10.0;70.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>360</x>
+      <y>210</y>
+      <w>470</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>Game
+Classes::Game
+--
++playtime: Integer
+--
++__init__(identifier: Integer, name: String, play: Integer): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>420</x>
+      <y>90</y>
+      <w>190</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0;170.0;70.0;170.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>20</x>
+      <y>370</y>
+      <w>730</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>ISteamNews
+SteamAPI::ISteamNews
+--
+--
+_+GetNewsForApp(appid: Integer, count: Integer, maxlength: Integer, formatS: String): Dict&lt;String, ?&gt;_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>20</x>
+      <y>450</y>
+      <w>730</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>ISteamUserStats
+SteamAPI::ISteamUserStats
+--
+--
+_+GetGlobalAchievementPercentagesForApp(gameid: Integer, formatS: String): Dict&lt;String, ?&gt;_
+_+GetPlayerAchievements(key: String, appid: Integer, steamid: String): Dict&lt;String, ?&gt;_
+_+GetUserStatsForGame(key: String, appid: Integer, steamid: String): Dict&lt;String, ?&gt;_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>20</x>
+      <y>560</y>
+      <w>730</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>ISteamUser
+SteamAPI::ISteamUser
+--
+--
+_+GetFriendList(key: String, steamid: String, relationship: String, formatS: String): Dict&lt;String, ?&gt;_
+_+GetPlayerSummaries(key: String, steamids: String, formatS: String): Dict&lt;String, ?&gt;_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>20</x>
+      <y>660</y>
+      <w>740</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>IPlayerService
+SteamAPI::IPlayerService
+--
+--
+_+GetOwnedGames(key: String, steamid: String, include_appinfo: Bool, include_played_free_games:_
+_Bool, formatS: String): Dict&lt;String, ?&gt;_
+_+GetRecentlyPlayedGames(key: String, steamid: String, count: String, formatS: String): Dict&lt;String, ?&gt;_</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

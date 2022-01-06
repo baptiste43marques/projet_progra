@@ -3,8 +3,9 @@ import SteamAPI
 import json
 from matplotlib import pyplot
 
-limiteEchantillon = 500
-limiteJeuxGraphiques = 100
+limiteEchantillon = 100
+limiteGraphique = 100
+limiteNbJeux = 250
 
 # Notre échantillon de données
 playerList = {}
@@ -33,19 +34,14 @@ while len(playerList) < limiteEchantillon and len(atraiter) > 0:
     try:
         # Et on essaye de recupérer ses informations
         summary = SteamAPI.ISteamUser.GetPlayerSummaries(api_key_, idActu)
-    except:
-        # Si on ne peut pas à cause d'une erreur, on skip le joueur
-        continue
-    # On récupère son pseudo
-    player = Player(idActu, summary["response"]["players"][0]["personaname"])
-    
-    # On récupère sa liste de jeux possédés et récemment joués
-    allGames = SteamAPI.IPlayerService.GetOwnedGames(api_key_, idActu, include_appinfo = True, include_played_free_games = True)
-    recentGames = SteamAPI.IPlayerService.GetRecentlyPlayedGames(api_key_, idActu)
-    
-    # On essaye d'obtenir les informations sur les jeux et de les instancier.
-    # Si ça échoue, on passe à la personne suivante
-    try:
+        # On récupère son pseudo
+        player = Player(idActu, summary["response"]["players"][0]["personaname"])
+        
+        # On récupère sa liste de jeux possédés et récemment joués
+        allGames = SteamAPI.IPlayerService.GetOwnedGames(api_key_, idActu, include_appinfo = True, include_played_free_games = True)
+        recentGames = SteamAPI.IPlayerService.GetRecentlyPlayedGames(api_key_, idActu)
+        
+        # On essaye d'obtenir les informations sur les jeux et de les instancier.
         for i in allGames["response"]["games"]:
             jeu = Game(i["appid"], i["name"], i["playtime_forever"])
             player.addOwnedGame(jeu)
@@ -55,6 +51,7 @@ while len(playerList) < limiteEchantillon and len(atraiter) > 0:
             jeu = Game(i["appid"], i["name"], i["playtime_2weeks"])
             player.addRecentGame(jeu)
     except:
+        # Si ça échoue, on passe à la personne suivante
         continue
     
     # On ajoute le joueur au dictionnaire (avec son steamid comme clé)
@@ -104,7 +101,7 @@ for i in playerList.keys():
 jeuxOrdre = dict(sorted(compteJeux.items(), key = lambda x:x[1], reverse = True))
 recentOrdre = dict(sorted(compteRecents.items(), key = lambda x:x[1], reverse = True))
 
-# Un tableau récapitulatif
+# Un tableau récapitulatif par jeu
 donnees = []
 
 # On insère, pour chaque jeu, les données sous la forme: [nom de jeu, utilisateurs, joueurs récents]
@@ -116,8 +113,35 @@ for i in jeuxOrdre.keys():
     donnees.append([i, jeuxOrdre[i], fin])
 
 # La colonne 1 du tableau, qui équivaut au nombre de personne possédant un jeu
-possessions = [i[1] for i in donnees][0:limiteJeuxGraphiques]
+possessions = [i[1] for i in donnees][0:limiteGraphique]
 # La colonne 2, qui équivaut au nombre de joueurs récents
-joues = [i[2] for i in donnees][0:limiteJeuxGraphiques]
-pyplot.bar(range(limiteJeuxGraphiques), possessions)
-pyplot.bar(range(limiteJeuxGraphiques), joues)
+joues = [i[2] for i in donnees][0:limiteGraphique]
+
+# Création du premier graphique
+pyplot.bar(range(len(possessions)), possessions)
+pyplot.bar(range(len(joues)), joues)
+pyplot.ylabel("Bleu: nombre de personnes ayant le jeu\nOrange: personnes ayant joué récemment au jeu")
+pyplot.xlabel("Numéros de jeu")
+
+pyplot.show()
+pyplot.clf()
+
+# Le 2e tableau, par joueur cette fois
+donnees2 = []
+
+# Pour chaque joueur, on insère son ID, le nombre de jeux possédés et le nombre de jeux auquel il a joué
+for i in playerList.keys():
+    if(len(playerList[i].allGameList) <= limiteNbJeux):
+        donnees2.append([i, len(playerList[i].allGameList), len(playerList[i].recentGameList)])
+
+# La colonne 1, le nombre de jeux possédés
+possessions2 = [i[1] for i in donnees2][0:limiteGraphique]
+# La colonne 2, le nombre de jeux lancés récemment
+joues2 = [i[2] for i in donnees2][0:limiteGraphique]
+# Création du 2e graphique
+pyplot.bar(range(len(possessions2)), possessions2)
+pyplot.bar(range(len(joues2)), joues2)
+pyplot.ylabel("Bleu: nombre de jeux possédés\nOrange: nombre de jeux ayant été lancés récemment")
+pyplot.xlabel("Numéro de personne")
+
+pyplot.show()

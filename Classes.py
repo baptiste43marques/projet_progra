@@ -31,11 +31,5 @@ class Game(SteamObject):
     def __init__(self, identifier, name, play):
         super().__init__(identifier, name)
         self.playtime = play
-    
-    # Cette méthode permet de trier les jeux par temps de jeu.
-    # ATTENTION ! Il faut bien distinguer les jeux ayant un temps de jeu récent et un temps de jeu total !
-    @staticmethod
-    def sortGameByPlayTime(game1, game2):
-        return game1.playtime < game2.playtime
         
     
