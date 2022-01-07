@@ -118,10 +118,13 @@ possessions = [i[1] for i in donnees][0:limiteGraphique]
 joues = [i[2] for i in donnees][0:limiteGraphique]
 
 # Création du premier graphique
+titre = ""
 pyplot.bar(range(len(possessions)), possessions)
 pyplot.bar(range(len(joues)), joues)
 pyplot.ylabel("Bleu: nombre de personnes ayant le jeu\nOrange: personnes ayant joué récemment au jeu")
-pyplot.xlabel("Numéros de jeu")
+pyplot.xlabel("Numéros de jeu, classés par possession totale")
+titre = titre + list(jeuxOrdre.keys())[0] + ", " + list(jeuxOrdre.keys())[1] + ", " + list(jeuxOrdre.keys())[2]
+pyplot.title(titre)
 
 pyplot.show()
 pyplot.clf()
@@ -143,5 +146,33 @@ pyplot.bar(range(len(possessions2)), possessions2)
 pyplot.bar(range(len(joues2)), joues2)
 pyplot.ylabel("Bleu: nombre de jeux possédés\nOrange: nombre de jeux ayant été lancés récemment")
 pyplot.xlabel("Numéro de personne")
+
+pyplot.show()
+pyplot.clf()
+
+# 3e set de données, identique au premier mais ordonné différemment
+donnees3 = []
+
+# On insère, pour chaque jeu, les données sous la forme: [nom de jeu, utilisateurs, joueurs récents]
+for i in recentOrdre.keys():
+    if i in jeuxOrdre.keys():
+        mid = jeuxOrdre[i]
+    else:
+        mid = 0
+    donnees3.append([i, mid, recentOrdre[i]])
+
+# La colonne 1 du tableau, qui équivaut au nombre de personne possédant un jeu
+possessions3 = [i[1] for i in donnees3][0:limiteGraphique]
+# La colonne 2, qui équivaut au nombre de joueurs récents
+joues3 = [i[2] for i in donnees3][0:limiteGraphique]
+
+# Création du troisième graphique
+titre = ""
+pyplot.bar(range(len(possessions)), possessions3)
+pyplot.bar(range(len(joues)), joues3)
+pyplot.ylabel("Bleu: nombre de personnes ayant le jeu\nOrange: personnes ayant joué récemment au jeu")
+pyplot.xlabel("Numéros de jeu, classés par popularité actuelle")
+titre = titre + list(recentOrdre.keys())[0] + ", " + list(recentOrdre.keys())[1] + ", " + list(recentOrdre.keys())[2]
+pyplot.title(titre)
 
 pyplot.show()
